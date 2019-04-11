@@ -46,7 +46,7 @@
     "autoload": {
         "psr-4": {
             "Brille24\\SyliusCustomerOptionsPlugin\\": "src/",
-            "Tests\\Brille24\\SyliusCustomerOptionsPlugin\\": "tests/"
+            "Tests\\Brille24\\SyliusCustomerOptionsPlugin\\": "tests/src/"
         }
     },
     "autoload-dev": {

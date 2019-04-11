@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions;
 
 use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\Validator\ValidatorInterface;
-use Brille24\SyliusCustomerOptionsPlugin\Entity\ProductInterface;
+use Brille24\SyliusCustomerOptionsPlugin\Traits\ProductCustomerOptionCapableTraitInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Model\TranslatableTrait;
@@ -143,7 +143,7 @@ class CustomerOptionGroup implements CustomerOptionGroupInterface
     }
 
     /** {@inheritdoc} */
-    public function addProduct(ProductInterface $product): void
+    public function addProduct(ProductCustomerOptionCapableTraitInterface $product): void
     {
         $this->products->add($product);
         $product->setCustomerOptionGroup($this);

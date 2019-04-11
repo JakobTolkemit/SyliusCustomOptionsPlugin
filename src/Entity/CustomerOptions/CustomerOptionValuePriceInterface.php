@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions;
 
-use Brille24\SyliusCustomerOptionsPlugin\Entity\ProductInterface;
 use Brille24\SyliusCustomerOptionsPlugin\Entity\Tools\DateRange;
+use Brille24\SyliusCustomerOptionsPlugin\Traits\ProductCustomerOptionCapableTraitInterface;
 use Sylius\Bundle\MoneyBundle\Formatter\MoneyFormatterInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
@@ -79,14 +79,14 @@ interface CustomerOptionValuePriceInterface extends ResourceInterface
     public function setCustomerOptionValue(?CustomerOptionValueInterface $customerOptionValue): void;
 
     /**
-     * @return ProductInterface|null
+     * @return ProductCustomerOptionCapableTraitInterface|null
      */
-    public function getProduct(): ?ProductInterface;
+    public function getProduct(): ?ProductCustomerOptionCapableTraitInterface;
 
     /**
-     * @param ProductInterface $product
+     * @param ProductCustomerOptionCapableTraitInterface $product
      */
-    public function setProduct(ProductInterface $product): void;
+    public function setProduct(ProductCustomerOptionCapableTraitInterface $product): void;
 
     /**
      * @param ChannelInterface $channel

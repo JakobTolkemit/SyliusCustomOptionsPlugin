@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Brille24\SyliusCustomerOptionsPlugin\Services;
 
-use Brille24\SyliusCustomerOptionsPlugin\Entity\OrderItemInterface;
 use Brille24\SyliusCustomerOptionsPlugin\Entity\OrderItemOptionInterface;
+use Brille24\SyliusCustomerOptionsPlugin\Traits\OrderItemCustomerOptionCapableTraitInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
 use Sylius\Component\Order\Model\OrderInterface;
 use Sylius\Component\Order\Processor\OrderProcessorInterface;
@@ -26,7 +26,7 @@ final class OrderPricesRecalculator implements OrderProcessorInterface
     public function process(OrderInterface $order): void
     {
         foreach ($order->getItems() as $orderItem) {
-            if (!$orderItem instanceof OrderItemInterface) {
+            if (!$orderItem instanceof OrderItemCustomerOptionCapableTraitInterface) {
                 continue;
             }
 

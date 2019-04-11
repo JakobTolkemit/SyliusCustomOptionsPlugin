@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions;
 
 use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\Validator\ValidatorInterface;
-use Brille24\SyliusCustomerOptionsPlugin\Entity\ProductInterface;
+use Brille24\SyliusCustomerOptionsPlugin\Traits\ProductCustomerOptionCapableTraitInterface;
 use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Model\CodeAwareInterface;
 use Sylius\Component\Resource\Model\ResourceInterface;
@@ -52,20 +52,20 @@ interface CustomerOptionGroupInterface extends CodeAwareInterface, ResourceInter
     public function hasOptionAssociations(): bool;
 
     /**
-     * @return ProductInterface[]
+     * @return ProductCustomerOptionCapableTraitInterface[]
      */
     public function getProducts(): array;
 
     /**
-     * @* @param ProductInterface[] $product
+     * @* @param ProductCustomerOptionCapableTraitInterface[] $product
      * @param array $products
      */
     public function setProducts(array $products): void;
 
     /**
-     * @param ProductInterface $product
+     * @param ProductCustomerOptionCapableTraitInterface $product
      */
-    public function addProduct(ProductInterface $product): void;
+    public function addProduct(ProductCustomerOptionCapableTraitInterface $product): void;
 
     /**
      * @return ValidatorInterface[]|Collection

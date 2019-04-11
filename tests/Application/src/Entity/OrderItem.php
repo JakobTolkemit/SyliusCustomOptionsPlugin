@@ -10,15 +10,15 @@
  */
 declare(strict_types=1);
 
-namespace Brille24\SyliusCustomerOptionsPlugin\Entity;
+namespace Tests\Brille24\SyliusCustomerOptionsPlugin\Entity;
 
-use Brille24\SyliusCustomerOptionsPlugin\Traits\ProductCustomerOptionCapableTrait;
-use Sylius\Component\Core\Model\Product as SyliusProduct;
+use Brille24\SyliusCustomerOptionsPlugin\Traits\OrderItemCustomerOptionCapableTrait;
+use Sylius\Component\Core\Model\OrderItem as SyliusOrderItem;
 
-class Product extends SyliusProduct implements ProductInterface
+class OrderItem extends SyliusOrderItem implements OrderItemInterface
 {
-    use ProductCustomerOptionCapableTrait {
-        __construct as protected customerOptionCapableConstructor;
+    use OrderItemCustomerOptionCapableTrait {
+        __construct as customerOptionCapableConstructor;
     }
 
     public function __construct()
