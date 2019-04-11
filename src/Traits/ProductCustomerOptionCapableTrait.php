@@ -31,7 +31,7 @@ trait ProductCustomerOptionCapableTrait
      *     targetEntity="Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\CustomerOptionValuePriceInterface",
      *     mappedBy="product",
      *     orphanRemoval=true,
-     *     cascade={persist: true, remove: true}
+     *     cascade={"persist", "remove"}
      * )
      */
     protected $customerOptionValuePrices;

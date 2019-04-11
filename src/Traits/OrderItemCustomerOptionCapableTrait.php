@@ -22,7 +22,7 @@ trait OrderItemCustomerOptionCapableTrait
      * @ORM\OneToMany(
      *     targetEntity="Brille24\SyliusCustomerOptionsPlugin\Entity\OrderItemOptionInterface",
      *     mappedBy="orderItem",
-     *     cascade={persist: true, remove: true}
+     *     cascade={"persist", "remove"}
      * )
      */
     protected $configuration;
