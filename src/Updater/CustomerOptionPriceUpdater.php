@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Brille24\SyliusCustomerOptionsPlugin\Updater;
 
+use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\CustomerOptionInterface;
 use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\CustomerOptionValueInterface;
 use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\CustomerOptionValuePriceInterface;
 use Brille24\SyliusCustomerOptionsPlugin\Entity\ProductInterface;
@@ -90,8 +91,7 @@ class CustomerOptionPriceUpdater implements CustomerOptionPriceUpdaterInterface
         $prices  = clone $product->getCustomerOptionValuePrices();
         $prices->add($price);
 
-        $constraint = new CustomerOptionValuePriceDateOverlapConstraint();
-        $violations = $this->validator->validate($prices, $constraint);
+        $violations = $this->validator->validate($prices, null, 'sylius');
 
         if (count($violations) > 0) {
             throw new ConstraintViolationException($violations);
