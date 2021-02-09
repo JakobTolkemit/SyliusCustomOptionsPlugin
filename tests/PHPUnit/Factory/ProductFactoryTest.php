@@ -12,6 +12,7 @@ use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\CustomerOptionVa
 use Brille24\SyliusCustomerOptionsPlugin\Entity\Product;
 use Brille24\SyliusCustomerOptionsPlugin\Enumerations\CustomerOptionTypeEnum;
 use Brille24\SyliusCustomerOptionsPlugin\Factory\ProductFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\CoreBundle\Fixture\Factory\ProductExampleFactory;
 use Sylius\Component\Core\Model\Channel;
@@ -23,10 +24,10 @@ class ProductFactoryTest extends TestCase
     /** @var ProductFactory */
     private $factory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $customerOptionValueRepositoryMock;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $customerOptionGroupRepositoryMock;
 
     /** @var CustomerOption */
@@ -116,18 +117,22 @@ class ProductFactoryTest extends TestCase
         ;
 
         $customerOptionValues = [];
+        $args                 = [];
         for ($i = 0; $i < 2; ++$i) {
             $customerOptionValue = new CustomerOptionValue();
             $customerOptionValue->setCode('val_'.$i);
             $customerOptionValue->setCustomerOption($this->customerOption);
             $customerOptionValues[] = $customerOptionValue;
 
-            $this->customerOptionValueRepositoryMock
-                ->expects($this->at($i))
-                ->method('findOneBy')->with(['code' => $customerOptionValue->getCode()])
-                ->willReturn($customerOptionValue)
-            ;
+            $args[] = [['code' => $customerOptionValue->getCode()]];
         }
+
+        $this->customerOptionValueRepositoryMock
+            ->method('findOneBy')
+            ->withConsecutive(...$args)
+            ->willReturnOnConsecutiveCalls(...$customerOptionValues)
+        ;
+
         $this->customerOption->setValues($customerOptionValues);
 
         $options = [

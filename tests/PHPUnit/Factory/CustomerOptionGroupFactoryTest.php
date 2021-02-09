@@ -10,6 +10,7 @@ use Brille24\SyliusCustomerOptionsPlugin\Entity\CustomerOptions\Validator\Valida
 use Brille24\SyliusCustomerOptionsPlugin\Entity\Product;
 use Brille24\SyliusCustomerOptionsPlugin\Factory\CustomerOptionGroupFactory;
 use Brille24\SyliusCustomerOptionsPlugin\Repository\CustomerOptionRepositoryInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Core\Repository\ProductRepositoryInterface;
 
@@ -18,10 +19,10 @@ class CustomerOptionGroupFactoryTest extends TestCase
     /** @var CustomerOptionGroupFactory */
     private $customerOptionGroupFactory;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $customerOptionRepositoryMock;
 
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
+    /** @var MockObject */
     private $productRepositoryMock;
 
     public function setUp(): void
@@ -155,17 +156,21 @@ class CustomerOptionGroupFactoryTest extends TestCase
             'option_3',
         ];
 
+        $args = [];
+        $vals = [];
         foreach ($optionCodes as $index => $code) {
             $option = new CustomerOption();
             $option->setCode($code);
 
-            $this->customerOptionRepositoryMock
-                ->expects($this->at($index))
-                ->method('findOneByCode')
-                ->with($code)
-                ->willReturn($option)
-            ;
+            $args[] = [$code];
+            $vals[] = $option;
         }
+
+        $this->customerOptionRepositoryMock
+            ->method('findOneByCode')
+            ->withConsecutive(...$args)
+            ->willReturnOnConsecutiveCalls(...$vals)
+        ;
 
         $options = [
             'code'         => 'some_group',
@@ -201,7 +206,7 @@ class CustomerOptionGroupFactoryTest extends TestCase
         }
 
         $this->productRepositoryMock
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('findBy')
             ->with(['code' => $productCodes])
             ->willReturn($mockProducts)
@@ -246,39 +251,30 @@ class CustomerOptionGroupFactoryTest extends TestCase
             $option = new CustomerOption();
             $option->setCode($code);
 
-            $this->customerOptionRepositoryMock
-                ->expects($this->at($index))
-                ->method('findOneByCode')
-                ->with($code)
-                ->willReturn($option)
-            ;
-
             $customerOptions[] = $option;
         }
 
         $this->customerOptionRepositoryMock
-            ->expects($this->at(3))
             ->method('findOneByCode')
-            ->with($customerOptions[0]->getCode())
-            ->willReturn($customerOptions[0]);
-
-        $this->customerOptionRepositoryMock
-            ->expects($this->at(4))
-            ->method('findOneByCode')
-            ->with($customerOptions[1]->getCode())
-            ->willReturn($customerOptions[1]);
-
-        $this->customerOptionRepositoryMock
-            ->expects($this->at(5))
-            ->method('findOneByCode')
-            ->with($customerOptions[1]->getCode())
-            ->willReturn($customerOptions[1]);
-
-        $this->customerOptionRepositoryMock
-            ->expects($this->at(6))
-            ->method('findOneByCode')
-            ->with($customerOptions[2]->getCode())
-            ->willReturn($customerOptions[2]);
+            ->withConsecutive(
+                ['option_1'],
+                ['option_2'],
+                ['option_3'],
+                ['option_1'],
+                ['option_2'],
+                ['option_2'],
+                ['option_3']
+            )
+            ->willReturnOnConsecutiveCalls(
+                $customerOptions[0],
+                $customerOptions[1],
+                $customerOptions[2],
+                $customerOptions[0],
+                $customerOptions[1],
+                $customerOptions[1],
+                $customerOptions[2]
+            )
+        ;
 
         $options = [
             'code'         => 'some_group',
